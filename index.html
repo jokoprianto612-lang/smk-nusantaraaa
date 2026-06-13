@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIM Sekolah Nusantara | SMK Nusantara 1</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -11,263 +11,46 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            font-style: normal; /* Pastikan tidak ada kemiringan default */
-        }
-        body {
-            background: #f0f7f0;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            background: linear-gradient(145deg, #0b3b2f, #0a2f25);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            overflow-y: auto;
-        }
-        .logo-area {
-            padding: 24px 20px;
-            text-align: center;
-            border-bottom: 1px solid #2e7d64;
-        }
-        .logo-area img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 50%;
-            background: white;
-            padding: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-        }
-        .logo-area img:hover { transform: scale(1.05); }
-        .logo-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, #ffb74d, #ff9800);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-top: 10px;
-        }
-        .logo-area p {
-            font-size: 0.7rem;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
-        .nav-menu {
-            flex: 1;
-            padding: 0 12px;
-        }
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            margin: 6px 0;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            color: #e0f2e9;
-            position: relative;
-            overflow: hidden;
-        }
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 183, 77, 0.2);
-            transition: left 0.3s ease;
-            z-index: 0;
-        }
-        .nav-item:hover::before { left: 0; }
-        .nav-item i, .nav-item span { position: relative; z-index: 1; }
-        .nav-item.active, .nav-item:hover {
-            background: #ffb74d;
-            color: #1e3a2f;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            transform: translateX(5px);
-        }
-        .footer-credit {
-            padding: 20px;
-            font-size: 0.7rem;
-            text-align: center;
-            border-top: 1px solid #2e7d64;
-            margin-top: auto;
-        }
-        /* Main content */
-        .main-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px 32px;
-            background: #f9fcf9;
-        }
-        /* Scrollbar */
-        .main-content::-webkit-scrollbar { width: 8px; }
-        .main-content::-webkit-scrollbar-track { background: #e0e8e0; border-radius: 10px; }
-        .main-content::-webkit-scrollbar-thumb { background: #2c7a5e; border-radius: 10px; }
-        /* Typography */
-        .page-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1b4d3e;
-            margin-bottom: 24px;
-            border-left: 8px solid #ffb74d;
-            padding-left: 20px;
-        }
-        .card {
-            background: white;
-            border-radius: 28px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-        .stat-card {
-            background: white;
-            border-radius: 28px;
-            padding: 20px;
-            border-left: 6px solid #ffb74d;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .stat-card:hover { transform: translateY(-8px); box-shadow: 0 20px 30px rgba(0,0,0,0.1); }
-        /* Struktur organisasi rapi */
-        .struktur-list { list-style: none; padding-left: 20px; }
-        .struktur-list li { padding: 8px 0; display: flex; align-items: center; gap: 10px; transition: transform 0.2s ease; font-weight: normal; font-style: normal; }
-        .struktur-list li:hover { transform: translateX(8px); color: #ffb74d; }
-        .struktur-list li i { width: 28px; color: #ffb74d; }
-        .level-1 { margin-left: 0; }
-        .level-2 { margin-left: 30px; }
-        .level-3 { margin-left: 60px; }
-        .level-4 { margin-left: 90px; }
-        /* Tabel - PERBAIKAN UTAMA: tidak miring, rapi, presisi */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: 'Poppins', sans-serif;
-            font-style: normal;
-            font-weight: 400;
-            font-size: 0.85rem;
-            table-layout: auto;
-        }
-        th, td {
-            padding: 12px 10px;
-            text-align: left;
-            vertical-align: middle;
-            border-bottom: 1px solid #e2e8f0;
-            font-style: normal !important;
-            font-weight: normal;
-            word-break: break-word;
-        }
-        th {
-            background: #eef6f2;
-            font-weight: 600;
-            color: #1b4d3e;
-        }
-        /* Tombol */
-        .btn {
-            background: #2c7a5e;
-            border: none;
-            color: white;
-            padding: 8px 18px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-style: normal;
-        }
-        .btn:hover { background: #1e5a46; transform: scale(1.02); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: #f0f7f0; display: flex; height: 100vh; overflow: hidden; }
+        .sidebar { width: 280px; background: linear-gradient(145deg, #0b3b2f, #0a2f25); color: white; display: flex; flex-direction: column; overflow-y: auto; }
+        .logo-area { padding: 20px; text-align: center; border-bottom: 1px solid #2e7d64; }
+        .logo-area img { width: 70px; border-radius: 50%; background: white; padding: 6px; }
+        .logo-area h3 { font-size: 1.2rem; margin-top: 10px; }
+        .logo-area p { font-size: 0.7rem; opacity: 0.9; }
+        .nav-menu { flex: 1; padding: 20px 12px; }
+        .nav-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 40px; cursor: pointer; transition: 0.2s; color: #e0f2e9; }
+        .nav-item i { width: 24px; }
+        .nav-item.active, .nav-item:hover { background: #ffb74d; color: #1e3a2f; }
+        .footer-credit { padding: 15px; font-size: 0.7rem; text-align: center; border-top: 1px solid #2e7d64; }
+        .main-content { flex: 1; overflow-y: auto; padding: 20px 30px; background: #f9fcf9; }
+        .page-title { font-size: 1.6rem; font-weight: 700; color: #1b4d3e; border-left: 6px solid #ffb74d; padding-left: 15px; margin-bottom: 20px; }
+        .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: 0.2s; }
+        .card:hover { transform: translateY(-3px); }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .stat-card { background: white; border-radius: 20px; padding: 15px; border-left: 5px solid #ffb74d; cursor: pointer; transition: 0.2s; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .btn { background: #2c7a5e; border: none; color: white; padding: 6px 14px; border-radius: 30px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; }
         .btn-warning { background: #ffb74d; color: #1e3a2f; }
         .btn-danger { background: #d9534f; }
         .btn-outline { background: transparent; border: 1px solid #2c7a5e; color: #2c7a5e; }
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white;
-            border-radius: 24px;
-            max-width: 500px;
-            width: 90%;
-            padding: 24px;
-            font-style: normal;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 16px;
-            border: 1px solid #ccc;
-            font-family: 'Poppins', sans-serif;
-            font-style: normal;
-        }
-        .real-time-badge {
-            background: #d1fae5;
-            color: #065f46;
-            border-radius: 50px;
-            padding: 4px 12px;
-            font-size: 0.7rem;
-            display: inline-block;
-            margin-top: 8px;
-        }
-        /* Responsif */
-        @media (max-width: 768px) {
-            .sidebar { width: 80px; }
-            .sidebar span:not(.nav-item i) { display: none; }
-            .logo-area h3, .logo-area p { display: none; }
-            .nav-item { justify-content: center; }
-            th, td { padding: 8px 5px; font-size: 0.75rem; }
-        }
-        /* Animasi */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .card, .stat-card { animation: fadeInUp 0.4s ease; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px 6px; border-bottom: 1px solid #e2e8f0; text-align: left; font-size: 0.85rem; }
+        th { background: #eef6f2; }
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; border-radius: 24px; max-width: 500px; width: 90%; padding: 20px; }
+        input, select, textarea { width: 100%; padding: 8px; margin: 8px 0; border-radius: 12px; border: 1px solid #ccc; }
+        .real-time-badge { background: #d1fae5; color: #065f46; border-radius: 50px; padding: 2px 10px; font-size: 0.7rem; display: inline-block; margin-top: 8px; }
+        @media (max-width: 768px) { .sidebar { width: 80px; } .sidebar span { display: none; } .logo-area h3, .logo-area p { display: none; } .nav-item { justify-content: center; } }
     </style>
 </head>
 <body>
 <div class="sidebar">
     <div class="logo-area">
-        <img src="https://placehold.co/400x400/2c7a5e/white?text=SMK+Nusantara" alt="Logo SMK Nusantara 1">
-        <div class="logo-text">SMK NUSANTARA 1</div>
-        <p>Terakreditasi A</p>
+        <img src="https://placehold.co/400x400/2c7a5e/white?text=SMK+Nusantara" alt="Logo">
+        <h3>SMK NUSANTARA 1</h3>
+        <p>Jl. Tarumanegara No.1, Pisangan<br>Ciputat Timur, Tangerang Selatan</p>
+        <p><i class="fas fa-phone"></i> (021) 74707222</p>
     </div>
     <div class="nav-menu">
         <div class="nav-item" data-page="dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></div>
@@ -283,7 +66,7 @@
 <div class="main-content" id="mainContent"></div>
 
 <script>
-    // Data Global
+    // ==================== DATA GLOBAL ====================
     let dataSiswa = [
         { id: 1, nis: "1001", nama: "Ahmad Fauzi", kelas: "XII RPL", alamat: "Jl. Merdeka 1", created_at: new Date().toISOString() },
         { id: 2, nis: "1002", nama: "Siti Nurhaliza", kelas: "XI MM", alamat: "Jl. Sudirman 5", created_at: new Date(Date.now() - 3*86400000).toISOString() },
@@ -320,13 +103,12 @@
         rapor: { status: "Sudah Diisi", persentase: 92, terakhir: "2025-06-10" }
     };
 
-    // Fungsi CRUD
     function getSiswa() { return dataSiswa; }
-    function addSiswa(s) { s.id = Date.now(); s.created_at = new Date().toISOString(); dataSiswa.push(s); return s; }
+    function addSiswa(s) { s.id = Date.now(); s.created_at = new Date().toISOString(); dataSiswa.push(s); }
     function updateSiswa(id, newData) { let idx = dataSiswa.findIndex(s => s.id == id); if(idx!==-1) dataSiswa[idx] = {...dataSiswa[idx], ...newData}; }
     function deleteSiswa(id) { dataSiswa = dataSiswa.filter(s => s.id != id); }
     function getBarang() { return dataBarang; }
-    function addBarang(b) { b.id = Date.now(); dataBarang.push(b); return b; }
+    function addBarang(b) { b.id = Date.now(); dataBarang.push(b); }
     function updateBarang(id, newData) { let idx = dataBarang.findIndex(b => b.id == id); if(idx!==-1) dataBarang[idx] = {...dataBarang[idx], ...newData}; }
     function deleteBarang(id) { dataBarang = dataBarang.filter(b => b.id != id); }
     function processTransaction(barangId, jumlah) {
@@ -340,204 +122,307 @@
     }
     function getTransaksi() { return dataTransaksi; }
 
-    // Dashboard
     let chartSiswa = null, chartRevenue = null;
     let currentPeriod = "week";
+
     function renderDashboard() {
-        const siswa = getSiswa();
-        const barang = getBarang();
-        const transaksi = getTransaksi();
-        const totalRevenue = transaksi.reduce((sum, t) => sum + t.total_harga, 0);
-        const lowStock = barang.filter(b => b.stok < 10);
+        const siswa = getSiswa(), barang = getBarang(), transaksi = getTransaksi();
+        const totalRevenue = transaksi.reduce((s,t)=>s+t.total_harga,0);
+        const lowStock = barang.filter(b=>b.stok<10);
         let labels = [], counts = [];
         const now = new Date();
         if (currentPeriod === 'week') {
-            for (let i = 6; i >= 0; i--) { let d = new Date(now); d.setDate(now.getDate() - i); labels.push(d.toISOString().slice(0,10)); counts.push(0); }
-            siswa.forEach(s => { if(!s.created_at) return; let tgl = new Date(s.created_at); let diff = Math.floor((now - tgl) / 86400000); if(diff>=0 && diff<=6) counts[6-diff]++; });
+            for(let i=6;i>=0;i--) { let d=new Date(now); d.setDate(now.getDate()-i); labels.push(d.toISOString().slice(0,10)); counts.push(0); }
+            siswa.forEach(s=>{ if(s.created_at){ let diff=Math.floor((now-new Date(s.created_at))/86400000); if(diff>=0&&diff<=6) counts[6-diff]++; } });
         } else {
-            for (let i = 5; i >= 0; i--) { let d = new Date(now.getFullYear(), now.getMonth() - i, 1); labels.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`); counts.push(0); }
-            siswa.forEach(s => { if(!s.created_at) return; let tgl = new Date(s.created_at); let key = `${tgl.getFullYear()}-${String(tgl.getMonth()+1).padStart(2,'0')}`; let idx = labels.indexOf(key); if(idx!==-1) counts[idx]++; });
+            for(let i=5;i>=0;i--) { let d=new Date(now.getFullYear(),now.getMonth()-i,1); labels.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`); counts.push(0); }
+            siswa.forEach(s=>{ if(s.created_at){ let key=new Date(s.created_at).toISOString().slice(0,7); let idx=labels.indexOf(key); if(idx!==-1) counts[idx]++; } });
         }
-        let revMap = {};
-        transaksi.forEach(t => { if(t.tanggal) { let day = t.tanggal.slice(0,10); revMap[day] = (revMap[day]||0) + t.total_harga; } });
-        let revLabels = Object.keys(revMap).sort().slice(-7);
-        let revData = revLabels.map(l => revMap[l]);
-
-        const container = document.getElementById('mainContent');
+        let revMap={}; transaksi.forEach(t=>{ if(t.tanggal){ let day=t.tanggal.slice(0,10); revMap[day]=(revMap[day]||0)+t.total_harga; } });
+        let revLabels=Object.keys(revMap).sort().slice(-7), revData=revLabels.map(l=>revMap[l]);
+        const container=document.getElementById('mainContent');
         container.innerHTML = `
             <div class="page-title">Dashboard SIM Sekolah Nusantara</div>
-            <div class="card">
-                <h3><i class="fas fa-map-marker-alt"></i> Alamat Sekolah</h3>
-                <p><strong>Jl. Tarumanegara No.1, Pisangan, Kec. Ciputat Tim., Kota Tangerang Selatan, Banten 15419</strong><br>
-                📞 (021) 74707222 | 🕒 Buka - Tutup 17.00</p>
-            </div>
-            <div class="card">
-                <h3><i class="fas fa-sitemap"></i> Struktur Organisasi</h3>
-                <ul class="struktur-list">
-                    <li class="level-1"><i class="fas fa-building"></i> Pimpinan Pusat (Kepala Sekolah)</li>
-                    <li class="level-2"><i class="fas fa-user-tie"></i> Manajer (Waka Manajemen)</li>
-                    <li class="level-3"><i class="fas fa-chalkboard-user"></i> Supervisor (Koordinator SIM)</li>
-                    <li class="level-4"><i class="fas fa-edit"></i> Admin Pencatatan Penjualan</li>
-                    <li class="level-4"><i class="fas fa-check-circle"></i> Verifikasi Pencatatan Penjualan</li>
-                    <li class="level-4"><i class="fas fa-utensils"></i> Juru Masak</li>
-                </ul>
-            </div>
-            <div class="grid-cards">
-                <div class="stat-card"><i class="fas fa-user-graduate fa-2x"></i><h2>${siswa.length}</h2><p>Total Siswa</p></div>
-                <div class="stat-card"><i class="fas fa-boxes fa-2x"></i><h2>${barang.length}</h2><p>Item Perlengkapan</p></div>
-                <div class="stat-card"><i class="fas fa-money-bill-wave fa-2x"></i><h2>Rp ${totalRevenue.toLocaleString()}</h2><p>Pendapatan Total</p></div>
-                <div class="stat-card"><i class="fas fa-exclamation-triangle fa-2x"></i><h2>${lowStock.length}</h2><p>Stok Menipis (≤10)</p></div>
-            </div>
-            <div class="card">
-                <div style="display:flex; justify-content:space-between;"><h3><i class="fas fa-chart-line"></i> Perkembangan Siswa</h3><div><button class="btn ${currentPeriod==='week'?'btn-warning':'btn-outline'}" id="weekBtn">Mingguan</button><button class="btn ${currentPeriod==='month'?'btn-warning':'btn-outline'}" id="monthBtn">Bulanan</button></div></div>
-                <canvas id="siswaChart" height="120"></canvas>
-            </div>
-            <div class="card"><h3><i class="fas fa-chart-simple"></i> Pendapatan 7 Hari Terakhir</h3><canvas id="revenueChart" height="100"></canvas></div>
+            <div class="card"><h3><i class="fas fa-map-marker-alt"></i> Alamat Sekolah</h3><p>Jl. Tarumanegara No.1, Pisangan, Ciputat Timur, Tangerang Selatan, Banten 15419<br>📞 (021) 74707222 | 🕒 Buka - Tutup 17.00</p></div>
+            <div class="card"><h3>Struktur Organisasi</h3><ul><li>Pimpinan Pusat (Kepala Sekolah)</li><li>└── Manajer (Waka Manajemen)</li><li>&nbsp;&nbsp;&nbsp;└── Supervisor (Koordinator SIM)</li><li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Admin Pencatatan Penjualan</li><li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Verifikasi Pencatatan Penjualan</li><li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── Juru Masak</li></ul></div>
+            <div class="grid-cards"><div class="stat-card"><i class="fas fa-user-graduate fa-2x"></i><h2>${siswa.length}</h2><p>Total Siswa</p></div><div class="stat-card"><i class="fas fa-boxes fa-2x"></i><h2>${barang.length}</h2><p>Item Perlengkapan</p></div><div class="stat-card"><i class="fas fa-money-bill-wave fa-2x"></i><h2>Rp ${totalRevenue.toLocaleString()}</h2><p>Pendapatan Total</p></div><div class="stat-card"><i class="fas fa-exclamation-triangle fa-2x"></i><h2>${lowStock.length}</h2><p>Stok Menipis (≤10)</p></div></div>
+            <div class="card"><div style="display:flex;justify-content:space-between"><h3>Perkembangan Siswa</h3><div><button class="btn ${currentPeriod==='week'?'btn-warning':'btn-outline'}" id="weekBtn">Mingguan</button><button class="btn ${currentPeriod==='month'?'btn-warning':'btn-outline'}" id="monthBtn">Bulanan</button></div></div><canvas id="siswaChart" height="120"></canvas></div>
+            <div class="card"><h3>Pendapatan 7 Hari Terakhir</h3><canvas id="revenueChart" height="100"></canvas></div>
         `;
-        const ctxSiswa = document.getElementById('siswaChart').getContext('2d');
-        if (chartSiswa) chartSiswa.destroy();
-        chartSiswa = new Chart(ctxSiswa, { type: 'bar', data: { labels, datasets: [{ label: currentPeriod==='week'?'Siswa Baru per Hari':'Siswa Baru per Bulan', data: counts, backgroundColor: '#2c7a5e', borderRadius: 8 }] } });
-        const ctxRev = document.getElementById('revenueChart').getContext('2d');
-        if (chartRevenue) chartRevenue.destroy();
-        chartRevenue = new Chart(ctxRev, { type: 'line', data: { labels: revLabels, datasets: [{ label: 'Pendapatan (Rp)', data: revData, borderColor: '#ffb74d', tension: 0.3 }] } });
-        document.getElementById('weekBtn').onclick = () => { currentPeriod='week'; renderDashboard(); };
-        document.getElementById('monthBtn').onclick = () => { currentPeriod='month'; renderDashboard(); };
+        const ctxSiswa=document.getElementById('siswaChart').getContext('2d');
+        if(chartSiswa) chartSiswa.destroy();
+        chartSiswa=new Chart(ctxSiswa,{type:'bar',data:{labels,datasets:[{label:currentPeriod==='week'?'Siswa Baru per Hari':'Siswa Baru per Bulan',data:counts,backgroundColor:'#2c7a5e'}]}});
+        const ctxRev=document.getElementById('revenueChart').getContext('2d');
+        if(chartRevenue) chartRevenue.destroy();
+        chartRevenue=new Chart(ctxRev,{type:'line',data:{labels:revLabels,datasets:[{label:'Pendapatan (Rp)',data:revData,borderColor:'#ffb74d',tension:0.3}]}});
+        document.getElementById('weekBtn').onclick=()=>{currentPeriod='week';renderDashboard();};
+        document.getElementById('monthBtn').onclick=()=>{currentPeriod='month';renderDashboard();};
     }
 
-    // Data Siswa dengan tabel presisi
     function renderSiswa() {
-        const siswa = getSiswa();
-        const container = document.getElementById('mainContent');
-        container.innerHTML = `
-            <div class="page-title">Data Siswa <button class="btn" id="btnTambahSiswa" style="float:right"><i class="fas fa-plus"></i> Tambah Siswa</button></div>
-            <div class="card" style="overflow-x:auto">
-                <table style="min-width:600px">
-                    <thead>
-                        <tr><th>NIS</th><th>Nama</th><th>Kelas</th><th>Alamat</th><th>Tgl Daftar</th><th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="siswaTbody"></tbody>
-                </table>
-            </div>
-        `;
-        const tbody = document.getElementById('siswaTbody');
-        siswa.forEach(s => {
-            let tgl = s.created_at ? new Date(s.created_at).toLocaleDateString('id-ID') : '-';
-            tbody.innerHTML += `<tr>
-                <td style="font-style:normal">${s.nis}</td>
-                <td style="font-style:normal">${s.nama}</td>
-                <td style="font-style:normal">${s.kelas}</td>
-                <td style="font-style:normal">${s.alamat}</td>
-                <td style="font-style:normal">${tgl}</td>
-                <td style="font-style:normal"><button class="btn-warning editSiswa" data-id="${s.id}">Edit</button> <button class="btn-danger hapusSiswa" data-id="${s.id}">Hapus</button></td>
-            </tr>`;
-        });
-        document.getElementById('btnTambahSiswa').onclick = () => showModalSiswa();
-        document.querySelectorAll('.editSiswa').forEach(btn => btn.onclick = () => { let id = parseInt(btn.dataset.id); let s = siswa.find(s => s.id === id); if(s) showModalSiswa(s); });
-        document.querySelectorAll('.hapusSiswa').forEach(btn => btn.onclick = () => { if(confirm('Hapus siswa?')) { deleteSiswa(btn.dataset.id); renderSiswa(); } });
+        const siswa=getSiswa();
+        const container=document.getElementById('mainContent');
+        container.innerHTML=`<div class="page-title">Data Siswa <button class="btn" id="btnTambahSiswa" style="float:right"><i class="fas fa-plus"></i> Tambah</button></div><div class="card"><table><thead><tr><th>NIS</th><th>Nama</th><th>Kelas</th><th>Alamat</th><th>Tgl Daftar</th><th>Aksi</th></tr></thead><tbody id="siswaTbody"></tbody></table></div>`;
+        const tbody=document.getElementById('siswaTbody');
+        siswa.forEach(s=>{ let tgl=s.created_at?new Date(s.created_at).toLocaleDateString():'-'; tbody.innerHTML+=`<tr><td>${s.nis}</td><td>${s.nama}</td><td>${s.kelas}</td><td>${s.alamat}</td><td>${tgl}</td><td><button class="btn-warning editSiswa" data-id="${s.id}">Edit</button> <button class="btn-danger hapusSiswa" data-id="${s.id}">Hapus</button></td></tr>`; });
+        document.getElementById('btnTambahSiswa').onclick=()=>showModalSiswa();
+        document.querySelectorAll('.editSiswa').forEach(btn=>btn.onclick=()=>{ let id=parseInt(btn.dataset.id); let s=siswa.find(s=>s.id===id); if(s) showModalSiswa(s); });
+        document.querySelectorAll('.hapusSiswa').forEach(btn=>btn.onclick=()=>{ if(confirm('Hapus?')){ deleteSiswa(btn.dataset.id); renderSiswa(); } });
     }
-    function showModalSiswa(editData = null) {
-        const modal = document.createElement('div'); modal.className = 'modal'; modal.style.display = 'flex';
-        modal.innerHTML = `<div class="modal-content"><h3>${editData ? 'Edit Siswa' : 'Tambah Siswa'}</h3><input id="nis" placeholder="NIS" value="${editData?.nis || ''}"><input id="nama" placeholder="Nama Lengkap" value="${editData?.nama || ''}"><input id="kelas" placeholder="Kelas" value="${editData?.kelas || ''}"><input id="alamat" placeholder="Alamat" value="${editData?.alamat || ''}"><div style="display:flex; gap:10px; margin-top:15px"><button class="btn" id="simpanSiswa">Simpan</button><button class="btn-outline" id="batalSiswa">Batal</button></div></div>`;
+    function showModalSiswa(editData=null){
+        const modal=document.createElement('div'); modal.className='modal'; modal.style.display='flex';
+        modal.innerHTML=`<div class="modal-content"><h3>${editData?'Edit':'Tambah'} Siswa</h3><input id="nis" placeholder="NIS" value="${editData?.nis||''}"><input id="nama" placeholder="Nama" value="${editData?.nama||''}"><input id="kelas" placeholder="Kelas" value="${editData?.kelas||''}"><input id="alamat" placeholder="Alamat" value="${editData?.alamat||''}"><div style="display:flex; gap:10px; margin-top:15px"><button class="btn" id="simpanSiswa">Simpan</button><button class="btn-outline" id="batalSiswa">Batal</button></div></div>`;
         document.body.appendChild(modal);
-        document.getElementById('simpanSiswa').onclick = () => {
-            const data = { nis: document.getElementById('nis').value, nama: document.getElementById('nama').value, kelas: document.getElementById('kelas').value, alamat: document.getElementById('alamat').value };
-            if (editData) updateSiswa(editData.id, data);
-            else addSiswa(data);
-            modal.remove(); renderSiswa();
-        };
-        document.getElementById('batalSiswa').onclick = () => modal.remove();
+        document.getElementById('simpanSiswa').onclick=()=>{ const data={nis:document.getElementById('nis').value,nama:document.getElementById('nama').value,kelas:document.getElementById('kelas').value,alamat:document.getElementById('alamat').value}; if(editData) updateSiswa(editData.id,data); else addSiswa(data); modal.remove(); renderSiswa(); };
+        document.getElementById('batalSiswa').onclick=()=>modal.remove();
     }
 
-    // Manajemen Barang, Transaksi, Laporan, Teknologi, Profil Sekolah (singkat namun lengkap)
     function renderManajemen() {
-        const barang = getBarang();
-        const container = document.getElementById('mainContent');
-        container.innerHTML = `<div class="page-title">Manajemen Sekolah <button class="btn" id="btnTambahBarang" style="float:right"><i class="fas fa-plus"></i> Tambah Barang</button></div><div class="card" style="overflow-x:auto"><table><thead><tr><th>Nama Barang</th><th>Stok</th><th>Harga</th><th>Satuan</th><th>Aksi</th></tr></thead><tbody id="barangTbody"></tbody></table></div>`;
-        const tbody = document.getElementById('barangTbody');
-        barang.forEach(b => { tbody.innerHTML += `<tr><td>${b.nama_barang}</td><td>${b.stok}</td><td>Rp ${b.harga.toLocaleString()}</td><td>${b.satuan}</td><td><button class="btn-warning editBarang" data-id="${b.id}">Edit</button> <button class="btn-danger hapusBarang" data-id="${b.id}">Hapus</button></td></tr>`; });
-        document.getElementById('btnTambahBarang').onclick = () => showModalBarang();
-        document.querySelectorAll('.editBarang').forEach(btn => btn.onclick = () => { let id = parseInt(btn.dataset.id); let b = barang.find(b => b.id === id); if(b) showModalBarang(b); });
-        document.querySelectorAll('.hapusBarang').forEach(btn => btn.onclick = () => { if(confirm('Hapus barang?')) { deleteBarang(btn.dataset.id); renderManajemen(); } });
+        const barang=getBarang();
+        const container=document.getElementById('mainContent');
+        container.innerHTML=`<div class="page-title">Manajemen Sekolah <button class="btn" id="btnTambahBarang" style="float:right"><i class="fas fa-plus"></i> Tambah Barang</button></div><div class="card"><table><thead><tr><th>Nama Barang</th><th>Stok</th><th>Harga</th><th>Satuan</th><th>Aksi</th></tr></thead><tbody id="barangTbody"></tbody></table></div>`;
+        const tbody=document.getElementById('barangTbody');
+        barang.forEach(b=>{ tbody.innerHTML+=`<tr><td>${b.nama_barang}</td><td>${b.stok}</td><td>Rp ${b.harga.toLocaleString()}</td><td>${b.satuan}</td><td><button class="btn-warning editBarang" data-id="${b.id}">Edit</button> <button class="btn-danger hapusBarang" data-id="${b.id}">Hapus</button></td></tr>`; });
+        document.getElementById('btnTambahBarang').onclick=()=>showModalBarang();
+        document.querySelectorAll('.editBarang').forEach(btn=>btn.onclick=()=>{ let id=parseInt(btn.dataset.id); let b=barang.find(b=>b.id===id); if(b) showModalBarang(b); });
+        document.querySelectorAll('.hapusBarang').forEach(btn=>btn.onclick=()=>{ if(confirm('Hapus barang?')){ deleteBarang(btn.dataset.id); renderManajemen(); } });
     }
-    function showModalBarang(editData = null) {
-        const modal = document.createElement('div'); modal.className = 'modal'; modal.style.display = 'flex';
-        modal.innerHTML = `<div class="modal-content"><h3>${editData ? 'Edit Barang' : 'Tambah Barang'}</h3><input id="nama" placeholder="Nama Barang" value="${editData?.nama_barang || ''}"><input id="stok" type="number" placeholder="Stok" value="${editData?.stok || 0}"><input id="harga" type="number" placeholder="Harga" value="${editData?.harga || 0}"><input id="satuan" placeholder="Satuan" value="${editData?.satuan || 'pcs'}"><div style="display:flex; gap:10px; margin-top:15px"><button class="btn" id="simpanBarang">Simpan</button><button class="btn-outline" id="batalBarang">Batal</button></div></div>`;
+    function showModalBarang(editData=null){
+        const modal=document.createElement('div'); modal.className='modal'; modal.style.display='flex';
+        modal.innerHTML=`<div class="modal-content"><h3>${editData?'Edit':'Tambah'} Barang</h3><input id="nama" placeholder="Nama Barang" value="${editData?.nama_barang||''}"><input id="stok" type="number" placeholder="Stok" value="${editData?.stok||0}"><input id="harga" type="number" placeholder="Harga" value="${editData?.harga||0}"><input id="satuan" placeholder="Satuan" value="${editData?.satuan||'pcs'}"><div style="display:flex; gap:10px; margin-top:15px"><button class="btn" id="simpanBarang">Simpan</button><button class="btn-outline" id="batalBarang">Batal</button></div></div>`;
         document.body.appendChild(modal);
-        document.getElementById('simpanBarang').onclick = () => {
-            const data = { nama_barang: document.getElementById('nama').value, stok: parseInt(document.getElementById('stok').value), harga: parseInt(document.getElementById('harga').value), satuan: document.getElementById('satuan').value };
-            if (editData) updateBarang(editData.id, data);
-            else addBarang(data);
-            modal.remove(); renderManajemen();
-        };
-        document.getElementById('batalBarang').onclick = () => modal.remove();
+        document.getElementById('simpanBarang').onclick=()=>{ const data={nama_barang:document.getElementById('nama').value,stok:parseInt(document.getElementById('stok').value),harga:parseInt(document.getElementById('harga').value),satuan:document.getElementById('satuan').value}; if(editData) updateBarang(editData.id,data); else addBarang(data); modal.remove(); renderManajemen(); };
+        document.getElementById('batalBarang').onclick=()=>modal.remove();
     }
+
     function renderTransaksi() {
-        const barang = getBarang();
-        const transaksi = getTransaksi();
-        const container = document.getElementById('mainContent');
-        container.innerHTML = `<div class="page-title">Kasir / Penjualan</div><div class="card"><h3>Form Transaksi Baru</h3><select id="barangSelect"><option value="">Pilih Barang</option>${barang.map(b => `<option value="${b.id}">${b.nama_barang} (Stok:${b.stok}) - Rp ${b.harga}</option>`).join('')}</select><input type="number" id="jumlahTrans" placeholder="Jumlah" min="1"><button class="btn" id="prosesTrans"><i class="fas fa-receipt"></i> Proses</button></div><div class="card"><h3>Riwayat Transaksi <i class="fas fa-print" id="cetakTerakhir" style="cursor:pointer; float:right;"></i></h3><table><thead><tr><th>Tanggal</th><th>Barang</th><th>Jumlah</th><th>Total</th><th>Cetak</th></tr></thead><tbody id="transTbody"></tbody></table></div>`;
-        const tbody = document.getElementById('transTbody');
-        [...transaksi].reverse().forEach(t => { let nama = t.barang?.nama_barang || (barang.find(b => b.id == t.barang_id)?.nama_barang) || '-'; tbody.innerHTML += `<tr><td>${new Date(t.tanggal).toLocaleString()}</td><td>${nama}</td><td>${t.jumlah}</td><td>Rp ${t.total_harga.toLocaleString()}</td><td><button class="btn-warning cetakStruk" data-id="${t.id}">Struk</button></td></tr>`; });
-        document.getElementById('prosesTrans').onclick = () => {
-            let barangId = document.getElementById('barangSelect').value, jumlah = parseInt(document.getElementById('jumlahTrans').value);
-            if (!barangId || isNaN(jumlah) || jumlah < 1) { alert("Pilih barang dan jumlah valid"); return; }
-            let selected = barang.find(b => b.id == barangId);
-            if (jumlah > selected.stok) { alert(`Stok tidak cukup! Tersisa ${selected.stok}`); return; }
-            try { processTransaction(parseInt(barangId), jumlah); alert("Transaksi berhasil!"); renderTransaksi(); } catch(err) { alert(err.message); }
-        };
-        document.querySelectorAll('.cetakStruk').forEach(btn => btn.onclick = () => { let id = parseInt(btn.dataset.id); let trans = transaksi.find(t => t.id === id); if(trans) cetakStruk(trans); });
-        document.getElementById('cetakTerakhir').onclick = () => { if(transaksi.length) cetakStruk(transaksi[transaksi.length-1]); };
+        const barang=getBarang(), transaksi=getTransaksi();
+        const container=document.getElementById('mainContent');
+        container.innerHTML=`<div class="page-title">Kasir / Penjualan</div><div class="card"><h3>Form Transaksi Baru</h3><select id="barangSelect"><option value="">Pilih Barang</option>${barang.map(b=>`<option value="${b.id}">${b.nama_barang} (Stok:${b.stok}) - Rp ${b.harga}</option>`).join('')}</select><input type="number" id="jumlahTrans" placeholder="Jumlah"><button class="btn" id="prosesTrans"><i class="fas fa-receipt"></i> Proses</button></div><div class="card"><h3>Riwayat Transaksi <i class="fas fa-print" id="cetakTerakhir" style="cursor:pointer; float:right;"></i></h3><table><thead><tr><th>Tanggal</th><th>Barang</th><th>Jumlah</th><th>Total</th><th>Cetak</th></tr></thead><tbody id="transTbody"></tbody></table></div>`;
+        const tbody=document.getElementById('transTbody');
+        [...transaksi].reverse().forEach(t=>{ let nama=t.barang?.nama_barang||(barang.find(b=>b.id==t.barang_id)?.nama_barang)||'-'; tbody.innerHTML+=`<tr><td>${new Date(t.tanggal).toLocaleString()}</td><td>${nama}</td><td>${t.jumlah}</td><td>Rp ${t.total_harga.toLocaleString()}</td><td><button class="btn-warning cetakStruk" data-id="${t.id}">Struk</button></td></tr>`; });
+        document.getElementById('prosesTrans').onclick=()=>{ let id=document.getElementById('barangSelect').value, jumlah=parseInt(document.getElementById('jumlahTrans').value); if(!id||isNaN(jumlah)||jumlah<1){ alert('Pilih barang dan jumlah valid'); return; } let selected=barang.find(b=>b.id==id); if(jumlah>selected.stok){ alert(`Stok tidak cukup! Tersisa ${selected.stok}`); return; } try{ processTransaction(parseInt(id),jumlah); alert('Transaksi berhasil!'); renderTransaksi(); }catch(e){ alert(e.message); } };
+        document.querySelectorAll('.cetakStruk').forEach(btn=>btn.onclick=()=>{ let id=parseInt(btn.dataset.id); let trans=transaksi.find(t=>t.id===id); if(trans) cetakStruk(trans); });
+        document.getElementById('cetakTerakhir').onclick=()=>{ if(transaksi.length) cetakStruk(transaksi[transaksi.length-1]); };
     }
-    function cetakStruk(trans) {
-        const win = window.open();
-        win.document.write(`<html><head><title>Struk</title><link href="https://fonts.googleapis.com/css2?family=Poppins" rel="stylesheet"><style>body{font-family:Poppins; padding:20px} .struk{border:1px solid #ccc; padding:20px; max-width:300px; margin:auto; border-radius:16px}</style></head><body><div class="struk"><center><img src="https://placehold.co/100x100/2c7a5e/white?text=SMK" width="70"><h3>SMK NUSANTARA 1</h3><p>Jl. Tarumanegara No.1, Pisangan, Ciputat Timur, Tangerang Selatan, Banten 15419</p><p>📞 (021) 74707222 | 🕒 Buka - Tutup 17.00</p><hr><p><strong>${new Date(trans.tanggal).toLocaleString()}</strong><br>Barang: ${trans.barang?.nama_barang}<br>Jumlah: ${trans.jumlah}<br>Total: Rp ${trans.total_harga.toLocaleString()}</p><hr><p>Terima kasih!</p><small>Created by Djoko</small></div><script>window.print();setTimeout(()=>window.close(),500)<\/script></body></html>`);
+    function cetakStruk(trans){
+        const win=window.open();
+        win.document.write(`<html><head><title>Struk</title><link href="https://fonts.googleapis.com/css2?family=Poppins" rel="stylesheet"><style>body{font-family:Poppins;padding:20px}.struk{border:1px solid #ccc;padding:20px;max-width:300px;margin:auto;border-radius:16px}</style></head><body><div class="struk"><center><img src="https://placehold.co/100x100/2c7a5e/white?text=SMK" width="70"><h3>SMK NUSANTARA 1</h3><p>Jl. Tarumanegara No.1, Pisangan, Ciputat Timur, Tangerang Selatan, Banten 15419</p><p>📞 (021) 74707222 | 🕒 Buka - Tutup 17.00</p><hr><p><strong>${new Date(trans.tanggal).toLocaleString()}</strong><br>Barang: ${trans.barang?.nama_barang}<br>Jumlah: ${trans.jumlah}<br>Total: Rp ${trans.total_harga.toLocaleString()}</p><hr><p>Terima kasih!</p><small>Created by Djoko</small></div><script>window.print();setTimeout(()=>window.close(),500)<\/script></body></html>`);
     }
+
     function renderLaporan() {
-        const transaksi = getTransaksi(), siswa = getSiswa();
-        const container = document.getElementById('mainContent');
-        container.innerHTML = `<div class="page-title">Laporan & Cetak</div><div class="card"><h3>Laporan Transaksi</h3><div><button class="btn" id="exportExcelTrans">Excel</button> <button class="btn-warning" id="exportPdfTrans">PDF</button></div><table><thead><tr><th>Tanggal</th><th>Barang</th><th>Jumlah</th><th>Total</th></tr></thead><tbody id="lapTransBody"></tbody></table></div><div class="card"><h3>Data Siswa</h3><button class="btn" id="exportExcelSiswa">Excel Siswa</button><table><thead><tr><th>NIS</th><th>Nama</th><th>Kelas</th><th>Alamat</th></tr></thead><tbody id="lapSiswaBody"></tbody></table></div>`;
-        const transBody = document.getElementById('lapTransBody');
-        transaksi.forEach(t => { let nama = t.barang?.nama_barang || '-'; transBody.innerHTML += `<tr><td>${t.tanggal}</td><td>${nama}</td><td>${t.jumlah}</td><td>Rp ${t.total_harga.toLocaleString()}</td></tr>`; });
-        const siswaBody = document.getElementById('lapSiswaBody');
-        siswa.forEach(s => { siswaBody.innerHTML += `<tr><td>${s.nis}</td><td>${s.nama}</td><td>${s.kelas}</td><td>${s.alamat}</td></tr>`; });
-        document.getElementById('exportExcelTrans').onclick = () => { const data = transaksi.map(t => ({ Tanggal: t.tanggal, Barang: t.barang?.nama_barang, Jumlah: t.jumlah, Total: t.total_harga })); const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Transaksi"); XLSX.writeFile(wb, "laporan_transaksi.xlsx"); };
-        document.getElementById('exportPdfTrans').onclick = () => { const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.text("Laporan Transaksi", 14, 10); doc.autoTable({ head: [['Tanggal','Barang','Jumlah','Total']], body: transaksi.map(t => [t.tanggal, t.barang?.nama_barang, t.jumlah, `Rp ${t.total_harga}`]) }); doc.save("laporan_transaksi.pdf"); };
-        document.getElementById('exportExcelSiswa').onclick = () => { const data = siswa.map(s => ({ NIS: s.nis, Nama: s.nama, Kelas: s.kelas, Alamat: s.alamat })); const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Siswa"); XLSX.writeFile(wb, "data_siswa.xlsx"); };
+        const transaksi=getTransaksi(), siswa=getSiswa();
+        const container=document.getElementById('mainContent');
+        container.innerHTML=`<div class="page-title">Laporan & Cetak</div><div class="card"><h3>Laporan Transaksi</h3><div><button class="btn" id="exportExcelTrans">Excel</button> <button class="btn-warning" id="exportPdfTrans">PDF</button></div><table><thead><tr><th>Tanggal</th><th>Barang</th><th>Jumlah</th><th>Total</th></tr></thead><tbody id="lapTransBody"></tbody></table></div><div class="card"><h3>Data Siswa</h3><button class="btn" id="exportExcelSiswa">Excel Siswa</button><table><thead><tr><th>NIS</th><th>Nama</th><th>Kelas</th><th>Alamat</th></tr></thead><tbody id="lapSiswaBody"></tbody></table></div>`;
+        const transBody=document.getElementById('lapTransBody');
+        transaksi.forEach(t=>{ let nama=t.barang?.nama_barang||'-'; transBody.innerHTML+=`<tr><td>${t.tanggal}</td><td>${nama}</td><td>${t.jumlah}</td><td>Rp ${t.total_harga.toLocaleString()}</td></tr>`; });
+        const siswaBody=document.getElementById('lapSiswaBody');
+        siswa.forEach(s=>{ siswaBody.innerHTML+=`<tr><td>${s.nis}</td><td>${s.nama}</td><td>${s.kelas}</td><td>${s.alamat}</td></tr>`; });
+        document.getElementById('exportExcelTrans').onclick=()=>{ const data=transaksi.map(t=>({Tanggal:t.tanggal,Barang:t.barang?.nama_barang,Jumlah:t.jumlah,Total:t.total_harga})); const ws=XLSX.utils.json_to_sheet(data); const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Transaksi"); XLSX.writeFile(wb,"laporan_transaksi.xlsx"); };
+        document.getElementById('exportPdfTrans').onclick=()=>{ const {jsPDF}=window.jspdf; const doc=new jsPDF(); doc.text("Laporan Transaksi SMK Nusantara 1",14,10); doc.autoTable({head:[['Tanggal','Barang','Jumlah','Total']],body:transaksi.map(t=>[t.tanggal,t.barang?.nama_barang,t.jumlah,`Rp ${t.total_harga}`])}); doc.save("laporan_transaksi.pdf"); };
+        document.getElementById('exportExcelSiswa').onclick=()=>{ const data=siswa.map(s=>({NIS:s.nis,Nama:s.nama,Kelas:s.kelas,Alamat:s.alamat})); const ws=XLSX.utils.json_to_sheet(data); const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Siswa"); XLSX.writeFile(wb,"data_siswa.xlsx"); };
     }
+
     function renderTeknologi() {
-        const container = document.getElementById('mainContent');
-        container.innerHTML = `<div class="page-title">Info Teknologi Informasi</div><div class="card"><h3>Manfaat TI</h3><p>Otomatisasi stok, laporan realtime, akses cepat data siswa, efisiensi operasional, grafik perkembangan siswa.</p></div><div class="card"><h3>Komponen TI</h3><p>Hardware (PC/Server), Software (Browser, JS), Brainware (Admin/Kasir), Database (JSON), Jaringan.</p></div><div class="card"><h3>Peran TI</h3><p>Otomasi kerja, komunikasi, pengambilan keputusan, keunggulan kompetitif.</p></div><div class="card"><h3>Dampak Positif & Negatif</h3><p>Efisiensi, produktivitas vs cybercrime, ketergantungan, kebocoran data.</p></div><div class="card">Created by Djoko - SIM Sekolah Nusantara</div>`;
+        const container=document.getElementById('mainContent');
+        container.innerHTML=`<div class="page-title">Info Teknologi Informasi</div><div class="card"><h3>Manfaat TI</h3><p>Otomatisasi stok, laporan realtime, akses cepat data siswa, efisiensi operasional.</p></div><div class="card"><h3>Komponen TI</h3><p>Hardware, Software, Brainware, Database, Jaringan.</p></div><div class="card"><h3>Peran TI</h3><p>Otomasi kerja, komunikasi, pengambilan keputusan, keunggulan kompetitif.</p></div><div class="card"><h3>Dampak Positif & Negatif</h3><p>Efisiensi, produktivitas vs cybercrime, ketergantungan, kebocoran data.</p></div><div class="card">Created by Djoko - SIM Sekolah Nusantara</div>`;
     }
+
+    // ==================== PROFIL SEKOLAH (RAPI, TANPA JSON) ====================
     function renderProfilSekolah() {
         const container = document.getElementById('mainContent');
-        container.innerHTML = `<div class="page-title">Detail Sekolah (Klik card untuk edit)</div><div class="grid-cards" id="profilCards">${Object.keys(dataProfil).map(k => `<div class="stat-card" data-kategori="${k}"><i class="fas ${k==='siswa'?'fa-user-graduate':k==='guru'?'fa-chalkboard-user':k==='sanitasi'?'fa-toilet':k==='rombel'?'fa-users-between':k==='sarpras'?'fa-building':k==='tik'?'fa-laptop-code':k==='akreditasi'?'fa-certificate':k==='program'?'fa-hammer':'fa-chart-simple'} fa-2x"></i><h3>${k.toUpperCase()}</h3><p>${JSON.stringify(dataProfil[k]).substring(0,80)}...</p><span class="real-time-badge">Klik edit</span></div>`).join('')}</div>`;
-        document.querySelectorAll('.stat-card').forEach(card => { card.addEventListener('click', () => showModalProfil(card.dataset.kategori)); });
+        container.innerHTML = `
+            <div class="page-title"><i class="fas fa-school"></i> Detail Sekolah (Klik card untuk edit)</div>
+            <div class="grid-cards" id="profilCards">
+                <div class="stat-card" data-kategori="siswa">
+                    <i class="fas fa-user-graduate fa-2x"></i>
+                    <h3>Siswa</h3>
+                    <p>Jumlah: ${dataProfil.siswa.jumlah}<br>Mengulang: ${dataProfil.siswa.mengulang}<br>Siswa Baru: ${dataProfil.siswa.baru}<br>Siswa Lulus: ${dataProfil.siswa.lulus}</p>
+                    <span class="real-time-badge">Klik edit</span>
+                </div>
+                <div class="stat-card" data-kategori="guru">
+                    <i class="fas fa-chalkboard-user fa-2x"></i>
+                    <h3>Guru & Tendik</h3>
+                    <p>Jumlah Guru: ${dataProfil.guru.jumlah_guru}<br>Jumlah Tendik: ${dataProfil.guru.jumlah_tendik}<br>Detail: ${dataProfil.guru.detail.substring(0,60)}...</p>
+                    <span class="real-time-badge">Klik edit</span>
+                </div>
+                <div class="stat-card" data-kategori="sanitasi">
+                    <i class="fas fa-toilet fa-2x"></i>
+                    <h3>Profil Sanitasi</h3>
+                    <p>Kondisi: ${dataProfil.sanitasi.kondisi}<br>Jumlah Toilet: ${dataProfil.sanitasi.jumlah_toilet}<br>Air Bersih: ${dataProfil.sanitasi.air_bersih}<br>Akses Disabilitas: ${dataProfil.sanitasi.akses_disabilitas}</p>
+                    <span class="real-time-badge">Klik edit</span>
+                </div>
+                <div class="stat-card" data-kategori="rombel">
+                    <i class="fas fa-users-between fa-2x"></i>
+                    <h3>Rombongan Belajar</h3>
+                    <p>Total Rombel: ${dataProfil.rombel.total_rombel}<br>Rincian: ${dataProfil.rombel.rincian}</p>
+                    <span class="real-time-badge">Klik edit</span>
+                </div>
+                <div class="stat-card" data-kategori="sarpras">
+                    <i class="fas fa-building fa-2x"></i>
+                    <h3>Sarana Prasarana</h3>
+                    <p>Ruang Kelas: ${dataProfil.sarpras.ruang_kelas}<br>Laboratorium: ${dataProfil.sarpras.lab}<br>Perpustakaan: ${dataProfil.sarpras.perpustakaan}<br>Lainnya: ${dataProfil.sarpras.lainnya}</p>
+                    <span class="real-time-badge">Klik edit</span>
+                </div>
+                <div class="stat-card" data-kategori="tik">
+                    <i class="fas fa-laptop-code fa-2x"></i>
+                    <h3>Profil TIK</h3>
+                    <p>Komputer: ${dataProfil.tik.komputer}<br>Lab TIK: ${dataProfil.tik.laboratorium_tik}<br>Akses Internet: ${dataProfil.tik.akses_internet}</p>
+                    <span class="real-time-badge">Klik edit</span>
+                </div>
+                <div class="stat-card" data-kategori="akreditasi">
+                    <i class="fas fa-certificate fa-2x"></i>
+                    <h3>Nilai Akreditasi</h3>
+                    <p>Nilai: ${dataProfil.akreditasi.nilai}<br>Skor: ${dataProfil.akreditasi.skor}<br>Tahun: ${dataProfil.akreditasi.tahun}</p>
+                    <span class="real-time-badge">Klik edit</span>
+                </div>
+                <div class="stat-card" data-kategori="program">
+                    <i class="fas fa-hammer fa-2x"></i>
+                    <h3>Program Pembangunan</h3>
+                    <p>Rehab: ${dataProfil.program.rehab}<br>Revitalisasi: ${dataProfil.program.revitalisasi}<br>RKB: ${dataProfil.program.rkb}<br>Sanitasi Sekolah: ${dataProfil.program.sanitasi_sekolah}</p>
+                    <span class="real-time-badge">Klik edit</span>
+                </div>
+                <div class="stat-card" data-kategori="rapor">
+                    <i class="fas fa-chart-simple fa-2x"></i>
+                    <h3>Pengisian Rapor Sekolah</h3>
+                    <p>Status: ${dataProfil.rapor.status}<br>Persentase: ${dataProfil.rapor.persentase}%<br>Terakhir: ${dataProfil.rapor.terakhir}</p>
+                    <span class="real-time-badge">Klik edit</span>
+                </div>
+            </div>
+        `;
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const kategori = card.dataset.kategori;
+                showModalProfil(kategori);
+            });
+        });
     }
+
     function showModalProfil(kategori) {
         const data = dataProfil[kategori];
         if (!data) return;
         let fields = '';
-        for (let key in data) fields += `<label>${key}</label><input id="${key}" value="${data[key]}">`;
-        const modal = document.createElement('div'); modal.className = 'modal'; modal.style.display = 'flex';
-        modal.innerHTML = `<div class="modal-content"><h3>Edit ${kategori}</h3>${fields}<div style="display:flex; gap:10px; margin-top:15px"><button class="btn" id="saveProfilBtn">Simpan</button><button class="btn-outline" id="closeProfilBtn">Batal</button></div></div>`;
+        switch(kategori) {
+            case 'siswa':
+                fields = `<label>Jumlah Siswa</label><input id="jumlah" type="number" value="${data.jumlah}">
+                         <label>Mengulang</label><input id="mengulang" type="number" value="${data.mengulang}">
+                         <label>Siswa Baru</label><input id="baru" type="number" value="${data.baru}">
+                         <label>Siswa Lulus</label><input id="lulus" type="number" value="${data.lulus}">`;
+                break;
+            case 'guru':
+                fields = `<label>Jumlah Guru</label><input id="jumlah_guru" type="number" value="${data.jumlah_guru}">
+                         <label>Jumlah Tendik</label><input id="jumlah_tendik" type="number" value="${data.jumlah_tendik}">
+                         <label>Detail</label><textarea id="detail">${data.detail}</textarea>`;
+                break;
+            case 'sanitasi':
+                fields = `<label>Kondisi</label><input id="kondisi" value="${data.kondisi}">
+                         <label>Jumlah Toilet</label><input id="jumlah_toilet" type="number" value="${data.jumlah_toilet}">
+                         <label>Air Bersih</label><input id="air_bersih" value="${data.air_bersih}">
+                         <label>Akses Disabilitas</label><input id="akses_disabilitas" value="${data.akses_disabilitas}">`;
+                break;
+            case 'rombel':
+                fields = `<label>Total Rombel</label><input id="total_rombel" type="number" value="${data.total_rombel}">
+                         <label>Rincian</label><input id="rincian" value="${data.rincian}">`;
+                break;
+            case 'sarpras':
+                fields = `<label>Ruang Kelas</label><input id="ruang_kelas" type="number" value="${data.ruang_kelas}">
+                         <label>Laboratorium</label><input id="lab" type="number" value="${data.lab}">
+                         <label>Perpustakaan</label><input id="perpustakaan" type="number" value="${data.perpustakaan}">
+                         <label>Lainnya</label><input id="lainnya" value="${data.lainnya}">`;
+                break;
+            case 'tik':
+                fields = `<label>Jumlah Komputer</label><input id="komputer" type="number" value="${data.komputer}">
+                         <label>Lab TIK</label><input id="laboratorium_tik" type="number" value="${data.laboratorium_tik}">
+                         <label>Akses Internet</label><input id="akses_internet" value="${data.akses_internet}">`;
+                break;
+            case 'akreditasi':
+                fields = `<label>Nilai (A/B/C)</label><input id="nilai" value="${data.nilai}">
+                         <label>Skor (0-100)</label><input id="skor" type="number" value="${data.skor}">
+                         <label>Tahun</label><input id="tahun" value="${data.tahun}">`;
+                break;
+            case 'program':
+                fields = `<label>Rehab</label><input id="rehab" value="${data.rehab}">
+                         <label>Revitalisasi</label><input id="revitalisasi" value="${data.revitalisasi}">
+                         <label>RKB</label><input id="rkb" value="${data.rkb}">
+                         <label>Sanitasi Sekolah</label><input id="sanitasi_sekolah" value="${data.sanitasi_sekolah}">`;
+                break;
+            case 'rapor':
+                fields = `<label>Status</label><input id="status" value="${data.status}">
+                         <label>Persentase (%)</label><input id="persentase" type="number" value="${data.persentase}">
+                         <label>Terakhir (YYYY-MM-DD)</label><input id="terakhir" type="date" value="${data.terakhir}">`;
+                break;
+        }
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.style.display = 'flex';
+        modal.innerHTML = `<div class="modal-content"><h3>Edit ${kategori.toUpperCase()}</h3>${fields}<div style="display:flex; gap:10px; margin-top:15px"><button class="btn" id="saveProfilBtn">Simpan</button><button class="btn-outline" id="closeProfilBtn">Batal</button></div></div>`;
         document.body.appendChild(modal);
         document.getElementById('saveProfilBtn').onclick = () => {
-            for (let key in data) data[key] = document.getElementById(key).value;
-            modal.remove(); renderProfilSekolah();
+            switch(kategori) {
+                case 'siswa':
+                    data.jumlah = parseInt(document.getElementById('jumlah').value);
+                    data.mengulang = parseInt(document.getElementById('mengulang').value);
+                    data.baru = parseInt(document.getElementById('baru').value);
+                    data.lulus = parseInt(document.getElementById('lulus').value);
+                    break;
+                case 'guru':
+                    data.jumlah_guru = parseInt(document.getElementById('jumlah_guru').value);
+                    data.jumlah_tendik = parseInt(document.getElementById('jumlah_tendik').value);
+                    data.detail = document.getElementById('detail').value;
+                    break;
+                case 'sanitasi':
+                    data.kondisi = document.getElementById('kondisi').value;
+                    data.jumlah_toilet = parseInt(document.getElementById('jumlah_toilet').value);
+                    data.air_bersih = document.getElementById('air_bersih').value;
+                    data.akses_disabilitas = document.getElementById('akses_disabilitas').value;
+                    break;
+                case 'rombel':
+                    data.total_rombel = parseInt(document.getElementById('total_rombel').value);
+                    data.rincian = document.getElementById('rincian').value;
+                    break;
+                case 'sarpras':
+                    data.ruang_kelas = parseInt(document.getElementById('ruang_kelas').value);
+                    data.lab = parseInt(document.getElementById('lab').value);
+                    data.perpustakaan = parseInt(document.getElementById('perpustakaan').value);
+                    data.lainnya = document.getElementById('lainnya').value;
+                    break;
+                case 'tik':
+                    data.komputer = parseInt(document.getElementById('komputer').value);
+                    data.laboratorium_tik = parseInt(document.getElementById('laboratorium_tik').value);
+                    data.akses_internet = document.getElementById('akses_internet').value;
+                    break;
+                case 'akreditasi':
+                    data.nilai = document.getElementById('nilai').value;
+                    data.skor = parseInt(document.getElementById('skor').value);
+                    data.tahun = document.getElementById('tahun').value;
+                    break;
+                case 'program':
+                    data.rehab = document.getElementById('rehab').value;
+                    data.revitalisasi = document.getElementById('revitalisasi').value;
+                    data.rkb = document.getElementById('rkb').value;
+                    data.sanitasi_sekolah = document.getElementById('sanitasi_sekolah').value;
+                    break;
+                case 'rapor':
+                    data.status = document.getElementById('status').value;
+                    data.persentase = parseInt(document.getElementById('persentase').value);
+                    data.terakhir = document.getElementById('terakhir').value;
+                    break;
+            }
+            modal.remove();
+            renderProfilSekolah();
         };
         document.getElementById('closeProfilBtn').onclick = () => modal.remove();
     }
 
-    // Navigasi
+    // ==================== NAVIGASI ====================
     function loadPage(page) {
-        if (page === 'dashboard') renderDashboard();
-        else if (page === 'siswa') renderSiswa();
-        else if (page === 'manajemen') renderManajemen();
-        else if (page === 'transaksi') renderTransaksi();
-        else if (page === 'laporan') renderLaporan();
-        else if (page === 'teknologi') renderTeknologi();
-        else if (page === 'profilsekolah') renderProfilSekolah();
+        if(page === 'dashboard') renderDashboard();
+        else if(page === 'siswa') renderSiswa();
+        else if(page === 'manajemen') renderManajemen();
+        else if(page === 'transaksi') renderTransaksi();
+        else if(page === 'laporan') renderLaporan();
+        else if(page === 'teknologi') renderTeknologi();
+        else if(page === 'profilsekolah') renderProfilSekolah();
     }
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', () => {
